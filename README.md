@@ -80,12 +80,12 @@ grunt.initConfig({
 			remoteServer: {
 				"protocol": "https",
 				"hostname": "localhost", 
-				"port": 8443,
+				"port": 443,
 				"path": "/",
 				"method": "POST",
 				"headers": {
 					"target_host": "srwq03",
-					"Authorization": "Bearer JYf0azPrf1RAvhUhpGZudVU9bBEa",
+					"Authorization": "Bearer abcd1234",
 					"Content-Type": "application/json"
 				}
 			},
@@ -95,8 +95,20 @@ grunt.initConfig({
 				}
 			},
 			enhanceData: function(postData, filepath, content){
+				var uri = '/resources/templates/',
+					templatepath = '';
+				
+				if (filepath.indexOf('app-common') === 0 ) {
+					templatepath = common + '/' + filepath.replace(/.*templates[^\w]*/i, '');
+				}
+				else {
+					templatepath = appConfig.appName + '/' + filepath.replace(/.*templates[^\w]*/i, '');
+				}
+				
+				postData.uri = uri + templatepath;
+				postData.metadata.templateName = templatepath.replace(/\.dust/, '');
 				postData.data = content;
-				postData.uri = filepath;
+				
 				return postData;
 			}
 		},
