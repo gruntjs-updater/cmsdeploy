@@ -1,7 +1,7 @@
 {
   "name": "grunt-cmsdeploy",
   "description": "Node.js Grunt plugin. Deploy file content to a remote server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/yongbchen/cmsdeploy",
   "author": {
     "name": "yongbchen",
