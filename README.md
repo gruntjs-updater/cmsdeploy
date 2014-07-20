@@ -17,6 +17,20 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-cmsdeploy');
 ```
 
+You can run this task as below:
+
+```javascript
+grunt cmsdeploy
+```
+
+or
+
+```javascript
+grunt cmsdeploy --auto
+```
+
+The late command will hot deploy all changed files automatically.
+
 ## The "cmsdeploy" task
 
 ### Overview
