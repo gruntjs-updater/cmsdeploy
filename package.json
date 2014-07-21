@@ -7,6 +7,11 @@
     "name": "yongbchen",
     "email": "yongbchen@ebay.com"
   },
+  "contributors": {
+	"name": "Fred Tu",
+    "email": "tu_fred@hotmail.com",
+	"url": "https://github.com/frtu"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/yongbchen/cmsdeploy.git"
