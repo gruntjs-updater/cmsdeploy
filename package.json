@@ -1,8 +1,8 @@
 {
   "name": "grunt-cmsdeploy",
   "description": "Node.js Grunt plugin. Deploy file content to a remote server",
-  "version": "0.1.1",
-  "homepage": "https://github.com/yongbchen/cmsdeploy",
+  "version": "0.1.2",
+  "homepage": "https://github.com/jackchen83/cmsdeploy",
   "author": {
     "name": "yongbchen",
     "email": "yongbchen@ebay.com"
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/yongbchen/cmsdeploy.git"
+    "url": "git://github.com/jackchen83/cmsdeploy.git"
   },
   "bugs": {
-    "url": "https://github.com/yongbchen/cmsdeploy/issues"
+    "url": "https://github.com/jackchen83/cmsdeploy/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/yongbchen/cmsdeploy/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jackchen83/cmsdeploy/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {
