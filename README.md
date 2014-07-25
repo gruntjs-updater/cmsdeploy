@@ -79,7 +79,7 @@ Type: `Function`
 Default value: `function(postData, file, content)`
 
 A function value that is used to enhance or modify the post data before sent to a remote server.
-The first parameter will be the options.postData, the second parameter is the file path which is coming from the grunt inline API this.filesSrc and the last parameter is the file content associated with that file.
+The first parameter will be the options.postData, the second parameter is the file path which is coming from the grunt build-in API this.filesSrc and the last parameter is the file content associated with that file.
 
 ### Usage Examples
 
