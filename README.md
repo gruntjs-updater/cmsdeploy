@@ -68,6 +68,12 @@ A object value that is used to send client request to a remote server, all optoi
 
 Here, the "protocol" field indicate whether this is a https client request or not.
 
+#### options.delayTime
+Type: `Number`
+Default value: `250`
+
+A number value that is used to indicate how much time should be delayed between sending each request.
+
 #### options.postData
 Type: `Object`
 Default value: `{}`
@@ -103,6 +109,7 @@ grunt.initConfig({
 					"Content-Type": "application/json"
 				}
 			},
+			delayTime: 250,
 			postData:{
 				"metadata": {
 					"release": "14.22"

@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 	var errorHandler = function errorHandler(err){
 		// a placeHolder error handler function
 		console.log(err.message);
-	}
+	};
 
 	var initAutoDeploy = function initAutoDeploy(grunt){
 		// For the saving multiple files simultaneously
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			changedFiles[filepath] = action;
 			onChange();
 		});
-	}
+	};
 
 	var sendRequest = function sendRequest(settings){
 		var postData = JSON.stringify(settings.postData),
@@ -54,7 +54,15 @@ module.exports = function(grunt) {
 		req.on('error', function(e){
 			console.log('Got error: ' + e.message);
 		});
-	}
+	};
+	
+	var sleepTime = function(milliseconds){
+		var start = +new Date;
+			
+		while(+new Date - start <= milliseconds){
+			;
+		}
+	};
 	
 
   grunt.registerMultiTask('cmsdeploy', 'Node.js Grunt plugin. Deploy file content to a remote server', function() {
@@ -70,6 +78,7 @@ module.exports = function(grunt) {
 					"Content-Type": "application/json"
 				}
 			},
+			delayTime: 250,
 			postData: {
 				
 			},
@@ -80,6 +89,7 @@ module.exports = function(grunt) {
 		files = this.filesSrc,
 		isAuto = grunt.option('auto') || false,
 		done = this.async(),
+		delayTime = options.delayTime || 250,
 		isHttps = true;
 	
 	if (options.remoteServer.protocol !== 'http' && options.remoteServer.protocol !== 'https') {
@@ -105,6 +115,7 @@ module.exports = function(grunt) {
 		if(typeof options.enhanceData === 'function'){
 			settings.postData = options.enhanceData(options.postData, file, content);
 		}
+		sleepTime(delayTime);
 		sendRequest(settings);
 		
 	}, function(err){
