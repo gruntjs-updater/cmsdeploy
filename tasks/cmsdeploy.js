@@ -31,40 +31,6 @@ module.exports = function(grunt) {
 		});
 	};
 
-	var sendRequest = function sendRequest(settings){
-		var postData = JSON.stringify(settings.postData),
-			options = settings.remoteServer,
-			req = {};
-			
-		if(settings.isHttps){
-			options.rejectUnauthorized = false;
-		}
-		
-		req = clientRequest.request(options, function(res){
-			res.setEncoding('utf8');
-			res.on('data', function(chunk){
-				console.log('Response: ' + chunk);
-				if(typeof settings.callback === 'function'){
-					settings.callback();
-				}
-			});
-		});
-		req.write(postData);
-		req.end();
-		req.on('error', function(e){
-			console.log('Got error: ' + e.message);
-		});
-	};
-	
-	var sleepTime = function(milliseconds){
-		var start = +new Date;
-			
-		while(+new Date - start <= milliseconds){
-			;
-		}
-	};
-	
-
   grunt.registerMultiTask('cmsdeploy', 'Node.js Grunt plugin. Deploy file content to a remote server', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
@@ -86,10 +52,17 @@ module.exports = function(grunt) {
 				return data;
 			}
 		}),
+		postData = options.postData,
 		files = this.filesSrc,
+		totalRequest = files.length,
+		idx = 0,
+		file = {},
+		content = '',
+		httpRequestOptions = {},
+		req = {},
 		isAuto = grunt.option('auto') || false,
 		done = this.async(),
-		delayTime = options.delayTime || 250,
+		delayTime = options.delayTime,
 		isHttps = true;
 	
 	if (options.remoteServer.protocol !== 'http' && options.remoteServer.protocol !== 'https') {
@@ -97,36 +70,60 @@ module.exports = function(grunt) {
     }
 	
 	isHttps = options.remoteServer.protocol === 'https' ? true : false;
+	if(isHttps){
+		options.remoteServer.rejectUnauthorized = false;
+	}
 	clientRequest = require(isHttps ? 'https' : 'http');
 	delete options.remoteServer.protocol;
+	
 	grunt.log.writeln("======changedFiles=====: ", files);
 	
-	async.each(files, function(file, callback){
-		//console.log("file: ", file);
-		var content = grunt.file.read(file),
-			settings = {
-				isHttps: isHttps,
-				remoteServer: options.remoteServer,
-				callback: function(){
-					callback();
-				}
-			};
+	httpRequestOptions = options.remoteServer;
+	
+	//Send the http(s) request
+	sendRequest(idx);
 		
-		if(typeof options.enhanceData === 'function'){
-			settings.postData = options.enhanceData(options.postData, file, content);
-		}
-		sleepTime(delayTime);
-		sendRequest(settings);
+	function sendRequest(idx){
 		
-	}, function(err){
-		if(err){
-			console.log('ERROR: an error occurred - ' + err.message);
-		}
-		else{
-			console.log('SUCCESS: async run successfully!');
+		if(idx > totalRequest - 1){
 			done();
+			return;
 		}
-	});
+		//Set the data that will be posted to the iCMS remote server
+		file = files[idx];
+		content = grunt.file.read(file);
+		postData = typeof options.enhanceData === 'function' ? options.enhanceData(options.postData, file, content) : '',
+		postData = JSON.stringify(postData);
+		
+		req = clientRequest.request(httpRequestOptions, function(res){
+			res.setEncoding('utf8');
+			res.on('data', function(chunk){
+				console.log('Response: ' + chunk);
+			});
+			res.on('end', function(){
+				//sleepTime(delayTime);
+				
+				setTimeout(function(){
+					idx++;
+					sendRequest(idx);
+				}, delayTime);
+			});
+		});
+		req.write(postData);
+		req.on('error', function(e){
+			console.log('Got error: ' + e.message);
+		});
+		req.end();
+	};
+	
+	function sleepTime(milliseconds){
+		var start = +new Date;
+			
+		while(+new Date - start <= milliseconds){
+			;
+		}
+	};
+	
 	if(isAuto){
 		initAutoDeploy(grunt);
 		grunt.task.run('watch:cmsdeploy');
