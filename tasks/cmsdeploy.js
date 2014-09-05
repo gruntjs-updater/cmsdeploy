@@ -102,11 +102,8 @@ module.exports = function(grunt) {
 			});
 			res.on('end', function(){
 				//sleepTime(delayTime);
-				
-				setTimeout(function(){
-					idx++;
-					sendRequest(idx);
-				}, delayTime);
+				idx++;
+				sendRequest(idx);
 			});
 		});
 		req.write(postData);
