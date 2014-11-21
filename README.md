@@ -3,7 +3,7 @@
 > Node.js Grunt plugin. Deploy file content to a remote server
 
 ## Getting Started
-This plugin requires Grunt `~0.4.4`
+This plugin requires Grunt `~0.4.x`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -81,6 +81,18 @@ Default value: `function(postData, file, content)`
 A function value that is used to enhance or modify the post data before sent to a remote server.
 The first parameter will be the options.postData, the second parameter is the file path which is coming from the grunt build-in API this.filesSrc and the last parameter is the file content associated with that file.
 
+#### options.delayTime
+Type: `Number`
+Default value: `200`
+
+A number value that is used to specify the delay time betweening each batch files sent to the remote iCMS server. Default value is 200 millisecond.
+
+#### options.batchFilesNum
+Type: `Number`
+Default value: `5`
+
+A number value that is used to specify the total files number in each batch which will be sent to the remote iCMS server. Default value is 5.
+
 ### Usage Examples
 
 #### Custom Options
@@ -124,7 +136,9 @@ grunt.initConfig({
 				postData.data = content;
 				
 				return postData;
-			}
+			},
+			delayTime: 200,
+			batchFilesNum: 5
 		},
 		src: ['app/templates/**/*.dust', 'app-common/templates/**/*.dust']
 	}
