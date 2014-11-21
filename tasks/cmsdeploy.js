@@ -16,13 +16,13 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('cmsdeploy', ('Node.js Grunt plugin.').red + ('\nDeploy file content to a remote server').yellow, function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({    
-            delayTime: 200,
-            batchFilesNum: 5
+            delayTime: 0,
+            batchFilesNum: 500
         }),
         delayTime = options.delayTime,
         batchFilesNum = options.batchFilesNum,
         files = this.filesSrc,
-        isAuto = grunt.option('auto') || false,
+        isAuto = grunt.option('auto'),
         done = this.async(),
         isHttps = options.remoteServer.protocol === 'https' ? true : false,
         async = require('async'),
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
         sleep: function(millsec){
             var now = +new Date;
             while(+new Date - now < millsec){
-                
+                ;
             }
         },
 

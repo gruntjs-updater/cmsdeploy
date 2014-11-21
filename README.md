@@ -83,15 +83,15 @@ The first parameter will be the options.postData, the second parameter is the fi
 
 #### options.delayTime
 Type: `Number`
-Default value: `200`
+Default value: `0`
 
-A number value that is used to specify the delay time betweening each batch files sent to the remote iCMS server. Default value is 200 millisecond.
+A number value that is used to specify the delay time betweening each batch files sent to the remote iCMS server. Default value is 0 millisecond.
 
 #### options.batchFilesNum
 Type: `Number`
-Default value: `5`
+Default value: `500`
 
-A number value that is used to specify the total files number in each batch which will be sent to the remote iCMS server. Default value is 5.
+A number value that is used to specify the total files number in each batch which will be sent to the remote iCMS server. Default value is 500.
 
 ### Usage Examples
 
