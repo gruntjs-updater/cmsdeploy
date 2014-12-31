@@ -36,7 +36,7 @@ module.exports = function(grunt) {
         options.remoteServer.rejectUnauthorized = false;
     }
 
-    grunt.verbose.writeln("======changedFiles=====: ", files);
+    grunt.verbose.writeln("[cmsdeploy] ==== changedFiles: ", files);
 
     util = {
         filesList: [],
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 
         errorHandler: function (err){
             // a placeHolder error handler function
-            console.log(err.message);
+            grunt.log.writeln(err.message);
         },
 
         initAutoDeploy: function (){
@@ -85,6 +85,9 @@ module.exports = function(grunt) {
             var postData = JSON.stringify(settings.postData),
                 options = settings.remoteServer,
                 req = clientRequest.request(options, function(res){
+
+                    grunt.log.writeln(('[cmsdeploy] ==== http response status code is: ').bold.blue, res.statusCode);
+                    grunt.log.writeln(('[cmsdeploy] ==== http response headers is: ').bold.blue, res.headers);
                     
                     if(typeof settings.callback === 'function'){
                         settings.callback();
@@ -92,14 +95,14 @@ module.exports = function(grunt) {
 
                     res.setEncoding('utf8');
                     res.on('data', function(chunk){
-                        console.log('Response: ' + chunk);
+                        grunt.verbose.writeln('[cmsdeploy] ==== Response data is: ', chunk);
                     });
                 });
 
             req.write(postData);
             req.end();
             req.on('error', function(e){
-                console.log('Got error: ' + e.message);
+                grunt.log.writeln('[cmsdeploy] ==== Got error: ' + e.message);
             });
         },
 
@@ -110,7 +113,7 @@ module.exports = function(grunt) {
             async.eachSeries(filesList, function(files, callbackDone){
 
                 async.each(files, function(file, callback){
-                    //console.log("file: ", file);
+                    //grunt.log.writeln("file: ", file);
                     var content = grunt.file.read(file),
                         settings = {
                             remoteServer: options.remoteServer,
@@ -127,10 +130,10 @@ module.exports = function(grunt) {
                     
                 }, function(err){
                     if(err){
-                        grunt.fail.fatal('ERROR: an error occurred - ' + err.message);
+                        grunt.fail.fatal('[cmsdeploy] ==== ERROR: an error occurred - ' + err.message);
                     }
                     else{
-                        console.log('SUCCESS: async run successfully!');
+                        grunt.log.writeln(('[cmsdeploy] ==== SUCCESS: async run successfully!').bold.green);
                         callbackDone();
                         _this.sleep(options.delayTime);
                     }
@@ -138,10 +141,10 @@ module.exports = function(grunt) {
 
             }, function(err){
                 if(err){
-                    grunt.fail.fatal('ERROR: an error occurred - ' + err.message);
+                    grunt.fail.fatal('[cmsdeploy] ==== ERROR: an error occurred - ' + err.message);
                 }
                 else{
-                    console.log('SUCCESS: async run successfully!');
+                    grunt.log.writeln(('[cmsdeploy] ==== SUCCESS: async run successfully!').bold.green);
                     done();
                 }
             });
@@ -167,7 +170,7 @@ module.exports = function(grunt) {
         batchFilesNum: batchFilesNum
     });
 
-    console.log(util.getFilesList());
+    grunt.log.writeln(util.getFilesList());
     util.start(options);
 
   });
