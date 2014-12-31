@@ -16,8 +16,8 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('cmsdeploy', ('Node.js Grunt plugin.').red + ('\nDeploy file content to a remote server').yellow, function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({    
-            delayTime: 0,
-            batchFilesNum: 500
+            delayTime: 200,
+            batchFilesNum: 100
         }),
         delayTime = options.delayTime,
         batchFilesNum = options.batchFilesNum,
